@@ -21,11 +21,15 @@ namespace SondageSoiree.Controllers
         {
             return View(dal.RenvoieTousLesRestaurants());
         }
+
         [HttpGet]
-        public ActionResult CreeerRestaurant()
+        public ActionResult CreerRestaurant()
         {
             return View();
         }
+
+
+        [HttpPost]
         public ActionResult CreerRestaurant(Restaurant poResto)
         {
 
@@ -71,7 +75,7 @@ namespace SondageSoiree.Controllers
             }
         }
         [HttpPost]
-        public ActionResult ModifierRestaurant(Restaurant poRestau)
+        public ActionResult ModifierRestaurant(int id, Restaurant poRestau)
         {
             if (ModelState.IsValid)
             {

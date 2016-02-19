@@ -6,6 +6,7 @@ using SondageSoiree;
 using SondageSoiree.Models;
 using SondageSoiree.Models.Entity;
 using SondageSoiree.Models.DAL;
+using System.Web.Helpers;
 
 namespace SondageSoiree.Models.DAL
 {
@@ -25,7 +26,16 @@ namespace SondageSoiree.Models.DAL
 
         public int AjouterEtudiant(string nom, string prenom, string password)
         {
-            throw new NotImplementedException();
+            Eleve eleve = new Eleve()
+            {
+                Nom = nom,
+                Prenom = prenom,
+                Password = Crypto.HashPassword(password)
+            };
+            sctx.Eleves.Add(eleve);
+            sctx.SaveChanges();
+
+            return eleve.Id;
         }
 
         public int AjouterVote(int idSondage, int idResto, int idEtudiant)
@@ -112,6 +122,23 @@ namespace SondageSoiree.Models.DAL
         public bool VoteExist(int idSondage, int idEtudiant)
         {
             throw new NotImplementedException();
+        }
+        public bool EleveExist(string nom)
+        {
+            var EleveCount = sctx.Eleves.Count(r => r.Nom == nom);
+            if (EleveCount > 0)
+                return true;
+            else
+                return false;
+        }
+
+        public bool VerificationConnexionEleve(String nom, String password)
+        {
+            var eleveConnexion = sctx.Eleves.Where(r => r.Nom == nom).SingleOrDefault();
+            if(eleveConnexion != null && Crypto.VerifyHashedPassword(eleveConnexion.Password,password)){
+                return true;
+            }
+            return false;
         }
     }
 }
