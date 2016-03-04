@@ -45,7 +45,17 @@ namespace SondageSoiree.Models.DAL
 
         public Eleve Authentifier(string nom, string password)
         {
-            throw new NotImplementedException();
+            var eleveConnexion = sctx.Eleves.Where(r => r.Nom == nom).SingleOrDefault();
+            Eleve dbEleve = new Eleve()
+            {
+                Id = eleveConnexion.Id,
+                Nom = eleveConnexion.Nom,
+                Prenom = eleveConnexion.Prenom,
+                Password = eleveConnexion.Password,
+                Votes = eleveConnexion.Votes,
+                Role = eleveConnexion.Role
+            };
+            return dbEleve;
         }
 
         public int CreerRestaurant(string nom, string adresse, string telephone, string email)

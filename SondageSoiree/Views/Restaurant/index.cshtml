@@ -14,7 +14,10 @@
 <body>
     @Styles.Render("~/Content/css")
         <p>
-            @Html.ActionLink("Créer un nouveau", "CreerRestaurant")
+            @if (User.IsInRole("Admin"))
+            {
+                @Html.ActionLink("Créer un nouveau", "CreerRestaurant")
+            }
         </p>
         <table class="table">
             <tr>
@@ -49,7 +52,10 @@
                         @Html.DisplayFor(modelItem => item.Telephone)
                     </td>
                     <td>
-                        @Html.ActionLink("Modifier", "ModifierRestaurant", new { id = item.Id }) |
+                        @if (User.IsInRole("Admin"))
+                        {
+                            @Html.ActionLink("Modifier", "ModifierRestaurant", new { id = item.Id })
+                        }                        
                         @Html.ActionLink("Details", "AfficherRestaurant", new { id = item.Id })
                     </td>
                 </tr>

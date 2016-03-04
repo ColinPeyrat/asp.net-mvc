@@ -20,17 +20,21 @@ namespace SondageSoiree.Controllers
         // GET: Restaurant
         public ActionResult Index()
         {
+
             return View(dal.RenvoieTousLesRestaurants());
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult CreerRestaurant()
         {
+
             return View();
         }
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult CreerRestaurant(Restaurant poResto)
         {
 
@@ -62,6 +66,7 @@ namespace SondageSoiree.Controllers
             }
             return View(restaurant);
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult ModifierRestaurant(int id)
         {
             Restaurant restaurant = dal.RenvoieRestaurant(id);
@@ -75,6 +80,8 @@ namespace SondageSoiree.Controllers
 
             }
         }
+               
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult ModifierRestaurant(int id, Restaurant poRestau)
         {

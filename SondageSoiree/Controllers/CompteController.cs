@@ -40,12 +40,14 @@ namespace SondageSoiree.Controllers
         {
             using (var dal = new Dal())
             {
-                if (dal.VerificationConnexionEleve(poEleve.Nom, poEleve.Password))
+
+                Eleve dbEleve = dal.Authentifier(poEleve.Nom, poEleve.Password);
+                if( dbEleve != null)
                 {
-                    IdentitySignin(poEleve);
+
+                    IdentitySignin(dbEleve);
                     return RedirectToAction("index", "restaurant");
                 }
-
                 else
                 {
                     ModelState.AddModelError(String.Empty, "Mot de passe ou identifiant invalide");
@@ -92,6 +94,8 @@ namespace SondageSoiree.Controllers
 
             var claims = new List<Claim>();
 
+            if (eleve.Role != null)
+                claims.Add(new Claim(ClaimTypes.Role, eleve.Role));
             // create required claims
             claims.Add(new Claim(ClaimTypes.NameIdentifier, eleve.Id.ToString()));
             claims.Add(new Claim(ClaimTypes.Name, eleve.Nom));
