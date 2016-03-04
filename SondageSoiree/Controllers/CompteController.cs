@@ -21,32 +21,48 @@ namespace SondageSoiree.Controllers
         }
 
         // GET: Compte
+        
         public ActionResult Index()
         {
             return View();
         }
+
         [HttpGet]
-        // GET: Compte
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
         }
+
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult Login(Eleve poEleve)
         {
             using (var dal = new Dal())
             {
                 if (dal.VerificationConnexionEleve(poEleve.Nom, poEleve.Password))
+                {
                     IdentitySignin(poEleve);
+                    return RedirectToAction("index", "restaurant");
+                }
+
                 else
-                    ModelState.AddModelError(String.Empty, "L'éléve éxiste déjà");
+                {
+                    ModelState.AddModelError(String.Empty, "Mot de passe ou identifiant invalide");
+                    return View();
+                }
+                    
             }
-            return View();
+           
         }
-        public ActionResult Register()
+
+        public ActionResult Logout()
         {
-            return View();
+            IdentitySignout();
+            return Redirect("/");
         }
+
+        [AllowAnonymous]
         public ActionResult CreerCompte(Eleve poEleve)
         {
             using (var dal = new Dal())
@@ -60,10 +76,12 @@ namespace SondageSoiree.Controllers
                         return RedirectToAction("login");
                     }
             }
-            return View();
+            return RedirectToAction("index", "restaurant");
         }
 
+        
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult CreerCompte()
         {
             return View();

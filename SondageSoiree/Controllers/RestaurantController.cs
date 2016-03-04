@@ -9,6 +9,7 @@ using System.Net;
 
 namespace SondageSoiree.Controllers
 {
+    [Authorize]
     public class RestaurantController : Controller
     {
         private readonly IDal dal;
